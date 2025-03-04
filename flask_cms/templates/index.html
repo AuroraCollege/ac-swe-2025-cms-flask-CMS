@@ -8,7 +8,16 @@
     <h1>Content List</h1>
     <ul>
       {% for content in contents %}
-      <li>{{ content.title }}</li>
+      <li>
+        <form
+          action="{{ url_for('view') }}"
+          method="post"
+          style="display: inline"
+        >
+          <input type="hidden" name="content_id" value="{{ content.id }}" />
+          <button type="submit">{{ content.title }}</button>
+        </form>
+      </li>
       {% endfor %}
     </ul>
     <a href="{{ url_for('add') }}">Add New Content</a>

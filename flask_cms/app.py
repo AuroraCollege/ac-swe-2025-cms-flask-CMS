@@ -26,6 +26,12 @@ def add():
         return redirect(url_for('index'))
     return render_template('add.html')
 
+@app.route('/view', methods=['POST'])
+def view():
+    content_id = request.form.get('content_id')
+    content = Content.query.get_or_404(content_id)
+    return render_template('view.html', content=content)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
