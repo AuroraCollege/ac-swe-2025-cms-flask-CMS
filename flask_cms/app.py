@@ -21,14 +21,14 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 @app.route('/')
 def index():
     contents = Content.query.all()
     return render_template('index.html', contents=contents)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.get(user_id)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -41,6 +41,12 @@ def login():
             login_user(user)
             return redirect(url_for('index'))
     return render_template('login.html')
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
